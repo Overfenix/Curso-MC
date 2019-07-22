@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.jimmybotezine.cursomc.domain.Categoria;
+import com.jimmybotezine.cursomc.dto.CategoriaDTO;
 import com.jimmybotezine.cursomc.repositories.CategoriaRepository;
 import com.jimmybotezine.cursomc.services.exceptions.DataIntegrityException;
 import com.jimmybotezine.cursomc.services.exceptions.ObjectNotFoundException;
@@ -34,7 +35,8 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		return repo.save(find(obj.getId()));
+		find(obj.getId());
+		return repo.save(obj);
 	}
 	
 	public void delete(Integer id) {
@@ -53,5 +55,9 @@ public class CategoriaService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 		
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(),objDto.getNome());
 	}
 }
